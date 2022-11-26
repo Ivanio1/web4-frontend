@@ -1,0 +1,123 @@
+.page {
+    display: flex;
+}
+
+.table {
+    width: 50vw;
+}
+
+.graph {
+    width: 25vw;
+}
+
+.form {
+    width: 25vw;
+}
+
+@media (min-width: 1193px) {
+    .page {
+        display: flex;
+        flex-direction: row;
+    }
+    .table {
+        order: 3;
+        margin-left:3%;
+        width: 100%;
+    }
+
+    .graph {
+        order: 1;
+    }
+
+    .form {
+        margin-left:3%;
+        order: 2;
+    }
+}
+
+@media (max-width: 1193px) and (min-width: 834px) {
+    .page {
+        display: flex;
+        flex-direction: column;
+    }
+    .table {
+        order: 3;
+        margin-left:3%;
+        width: 100%;
+    }
+
+    .graph {
+        order: 1;
+    }
+
+    .form {
+        margin-left:3%;
+
+        order: 2;
+    }
+}
+
+@media (max-width: 834px) {
+    .page {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .header {
+        height: 5vh;
+        width: 100vw;
+        background-color: #717369;
+        font-family: "Andale Mono", sans-serif;
+        font-size: 17px;
+        padding: 10px;
+    }
+
+    .result-table {
+        margin: 20px 0 0 0;
+        color: white;
+        width: 350px;
+        border-spacing: 2px;
+        border: 2px solid white;
+        border-collapse: collapse;
+        max-height: 500px;
+        overflow-y: hidden;
+
+    }
+
+    .result-table th {
+        background: #717369;
+        height: 50px;
+        border: 1px solid white;
+        width: 17%;
+        font-family: "Andale Mono", sans-serif;
+        font-size: 23px;
+    }
+
+    .result-table td {
+        height: 30px;
+        text-align: center;
+        background: grey;
+        border: 1px solid white;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 5px;
+        font-size: 12px;
+    }
+
+    .table {
+        margin-left:3%;
+        order: 3;
+        width: 100%;
+    }
+
+    .graph {
+        order: 1;
+    }
+
+    .form {
+        margin-left:3%;
+
+        order: 2;
+    }
+}
