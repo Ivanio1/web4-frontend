@@ -1,0 +1,16 @@
+.header{
+    height: 5vh;
+    background-color: #717369;
+    font-family: "Andale Mono", sans-serif;
+    font-size: 25px;
+    padding: 10px;
+}
+.left{
+    float: left;
+    color: white;
+}
+.right{
+    float: right;
+    color: white;
+}
+
