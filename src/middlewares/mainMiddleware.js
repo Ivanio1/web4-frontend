@@ -47,18 +47,7 @@ const mainMiddleware = store => next => action => {
             }
             return next(action);
         }
-        case "MAIN_UPDATE_POINT": {
-            let history = action.value.pointHistoryElements.concat().sort((a, b) => b.date - a.date)[0];
-            if (Number(store.getState().mainState.xChange) !== Number(history.x) || Number(store.getState().mainState.yChange) !== Number(history.y)) {
-                updatePoint(store, {
-                    id: store.getState().mainState.currentPoint,
-                    x: store.getState().mainState.xChange, y: store.getState().mainState.yChange
-                });
-            } else {
-                store.dispatch({type: "MAIN_SET_CURRENT_POINT", value: {id: 0}})
-            }
-            return next(action);
-        }
+
         case "MAIN_DELETE_POINT": {
             deletePoint(store, action.value);
             store.dispatch({type: "MAIN_SET_CURRENT_POINT", value: {id: 0}});
@@ -85,7 +74,7 @@ const updateDrawing = (store, value, r) => {
 
 const getPoints = (store, history) => {
     let req = new XMLHttpRequest();
-    req.open("GET", `${DEFAULT_URL}/show`, true);
+    req.open("GET", `${DEFAULT_URL}/points`, true);
     req.onload = () => handleUpdate(req.responseText, store, history);
     req.onerror = () => alert("Сервер временно недоступен");
     req.send();
@@ -93,33 +82,23 @@ const getPoints = (store, history) => {
 
 const addPoint = (store, value) => {
     let req = new XMLHttpRequest();
-    req.open("POST", `${DEFAULT_URL}/add`, true);
+    req.open("POST", `${DEFAULT_URL}/points`, true);
     req.onload = () => handleUpdate(req.responseText, store);
     req.onerror = () => alert("Сервер временно недоступен");
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(JSON.stringify(value));
 };
 
-const updatePoint = (store, value) => {
+
+
+const deletePoint = (store, value) => {
     let req = new XMLHttpRequest();
-    req.open("POST", `${DEFAULT_URL}/update`, true);
+    req.open("DELETE", `${DEFAULT_URL}/points`, true);
     req.onload = () => {
         handleUpdate(req.responseText, store);
         store.dispatch({type: "MAIN_SET_CURRENT_POINT", value: {id: 0}})
     };
     req.onerror = () => alert("Сервер временно недоступен");
-    req.setRequestHeader('Content-Type', 'application/json');
-    req.send(JSON.stringify(value));
-};
-
-const deletePoint = (store, value) => {
-    let req = new XMLHttpRequest();
-    req.open("POST", `${DEFAULT_URL}/delete`, true);
-    req.onload = () => {
-        handleUpdate(req.responseText, store);
-        store.dispatch({type: "MAIN_SET_CURRENT_POINT", value: {id: 0}})
-    };
-    req.onerror = () => alert("Сервер временно недосупен");
     req.setRequestHeader('Content-Type', 'application/json');
     req.send(JSON.stringify({id: value.id}));
 };

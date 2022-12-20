@@ -1,5 +1,5 @@
 import React from 'react';
-import {Router, Route} from "react-router-dom";
+import {Switch, Route} from "react-router-dom";
 import "./style.scss"
 import LoginPage from "./LoginPage/LoginPage";
 import MainPage from "./MainPage/MainPage";
@@ -10,11 +10,11 @@ class App extends React.Component {
         return (
             <div className="App">
                 <Header/>
-                <Router>
+                <Switch>
                     <Route exact path="/login" component={LoginPage}/>
                     <Route exact path="/register" component={RegisterPage}/>
                     <Route path="/" component={MainPage}/>
-                </Router>
+                </Switch>
             </div>
         );
     }

@@ -133,7 +133,7 @@ class CanvasComponent extends React.Component {
         let y = Number((-(event.pageY - window.pageYOffset - obj.getBoundingClientRect().y - obj.height / 2) / this.i).toFixed(2));
         let date = new Date();
         let utcDate = date.toUTCString()
-        if (!(x < -5 || x > 5 || y < -5 || y > 5)) {
+        if (!(x < -6 || x > 6 || y < -6 || y > 6)) {
             this.props.dispatch({type: "MAIN_ADD_POINT", value: {x: x, y: y, r: this.props.r,currtime:utcDate}})
         }
     }

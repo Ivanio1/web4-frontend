@@ -29,7 +29,7 @@ class MainContainer extends React.Component {
                 <CanvasComponent/>
 
                 <h2>Choose X:</h2>
-                <input type="text" value={this.props.x} placeholder="      от -5 до 5"
+                <input type="text" value={this.props.x} maxLength={5} placeholder="      от -5 до 5"
                        onChange={event => this.props.dispatch({
                            type: "MAIN_SET_X",
                            value: event.target.value.replace(",", ".")
