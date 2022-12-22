@@ -1,4 +1,5 @@
 import {DEFAULT_URL} from "../index";
+import Cookies from "js-cookie";
 
 const mainMiddleware = store => next => action => {
     switch (action.type) {
@@ -15,7 +16,6 @@ const mainMiddleware = store => next => action => {
             return next(action)
         }
         case "MAIN_ADD_POINT": {
-
             addPoint(store, action.value);
             store.dispatch({type: "MAIN_SET_Y", value: ""});
             return next(action)
@@ -74,7 +74,8 @@ const updateDrawing = (store, value, r) => {
 
 const getPoints = (store, history) => {
     let req = new XMLHttpRequest();
-    req.open("GET", `${DEFAULT_URL}/points`, true);
+    let page=Cookies.get("p");
+    req.open("GET", `${DEFAULT_URL}/points?page=${page-1}&size=5`, true);
     req.onload = () => handleUpdate(req.responseText, store, history);
     req.onerror = () => alert("Сервер временно недоступен");
     req.send();
@@ -82,7 +83,8 @@ const getPoints = (store, history) => {
 
 const addPoint = (store, value) => {
     let req = new XMLHttpRequest();
-    req.open("POST", `${DEFAULT_URL}/points`, true);
+    let page=Cookies.get("p");
+    req.open("POST", `${DEFAULT_URL}/points?page=${page-1}&size=5`, true);
     req.onload = () => handleUpdate(req.responseText, store);
     req.onerror = () => alert("Сервер временно недоступен");
     req.setRequestHeader('Content-Type', 'application/json');
@@ -107,12 +109,15 @@ const handleUpdate = (text, store, history = null) => {
     if (text.startsWith("{")) {
         let response = JSON.parse(text);
         if (response.status === 200) {
-            store.dispatch({type: "APP_UPDATE_POINTS_SUCCESS", value: response.answer})
+            store.dispatch({type: "APP_UPDATE_POINTS_SUCCESS", value: response.answer.content})
+            store.dispatch({type:"APP_UPDATE_TOTALPAGES",value:response.answer.totalPages})
         } else if (history) {
             alert(history);
             store.dispatch({type: "APP_LOGOUT", value: {history: history}})
         }
     } else store.dispatch({type: "APP_LOGOUT", value: {history: history}})
 };
+
+
 
 export default mainMiddleware;

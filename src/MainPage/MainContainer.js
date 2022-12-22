@@ -5,11 +5,12 @@ import CanvasComponent from "./CanvasComponent";
 import ResultTable from "./ResultTable";
 
 class MainContainer extends React.Component {
-
     constructor(props) {
         super(props);
         if (this.props.user === null) this.props.history.push("/login");
-        else this.props.dispatch({type: "APP_GET_POINTS", value: {history: this.props.history}})
+        else {
+            this.props.dispatch({type: "APP_GET_POINTS", value: {history: this.props.history}})
+        }
 
     }
     handleSubmit(){
@@ -25,7 +26,7 @@ class MainContainer extends React.Component {
         return (
             <div className="main">
                 <br/>
-                <h2 id="hello">Hello, {this.props.user}. Check your points here!</h2>
+                <h2 id="hello">Привет, {this.props.user}. Проверь свои точки здесь!</h2>
                 <CanvasComponent/>
 
                 <h2>Choose X:</h2>
@@ -35,7 +36,7 @@ class MainContainer extends React.Component {
                            value: event.target.value.replace(",", ".")
                        })}/>
                 <h2>Choose Y:</h2>
-                <input type="text" value={this.props.y} placeholder="      от -5 до 3"
+                <input type="text" value={this.props.y} maxLength={5} placeholder="      от -5 до 3"
                        onChange={event => this.props.dispatch({
                            type: "MAIN_SET_Y",
                            value: event.target.value.replace(",", ".")
@@ -51,7 +52,8 @@ class MainContainer extends React.Component {
                 <button className="submit-button" onClick={() =>this.handleSubmit()} disabled={this.props.y === "" || this.props.y === "-" || this.props.y === "."||this.props.x === "" || this.props.x === "-" || this.props.x === "."}>Check
                 </button>
                 <button className="submit-button" onClick={this.exit}>Logout</button>
-                <br/>
+                <br/><br/><br/><br/><br/><br/><br/><br/>
+                <h2 id="hello" >Чтобы посмотреть добавленные точки кликни на последнюю страницу</h2>
                 <ResultTable/>
 
             </div>

@@ -11,6 +11,15 @@ const appReducer = (state = {}, action) => {
         case("APP_UPDATE_POINTS_SUCCESS"): {
             return Object.assign({}, state, {points: action.value});
         }
+
+        case("APP_UPDATE_TOTALPAGES"): {
+            return Object.assign({}, state, {totalPages: action.value});
+
+        }
+        case("APP_UPDATE_CURRENTPAGE"): {
+            return Object.assign({}, state, {currentPage: action.value});
+        }
+
         case("APP_UPDATE_DRAWING_SUCCESS"): {
             return Object.assign({}, state, {drawing: action.value});
         }

@@ -1,12 +1,13 @@
 import React from "react";
 import {connect} from "react-redux";
 import _ from 'lodash'
+import Cookies from "js-cookie";
 
 class ResultTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentpage: 1,
+            currentpage: Number(Cookies.get("p")),
             paginatedPoints: [],
             count: 1
         };
@@ -16,14 +17,12 @@ class ResultTable extends React.Component {
     render() {
         let result = [];
         let points = this.props.points;
-        const pageSize = 5
-        const pageCount = points ? Math.ceil(points.length / pageSize) : 0
-        const pages = _.range(1, pageCount + 1)
-        let paginatedPoints = points.slice(0, pageSize)
-        const startIndex = (this.state.currentpage - 1) * pageSize
-        paginatedPoints = points.slice(startIndex, startIndex + pageSize)
 
-        for (let item of paginatedPoints) {
+        const pageCount = this.props.totalPages
+        const pages = _.range(1, pageCount + 1)
+        Cookies.set("p", this.state.currentpage)
+        Cookies.set("lp", pageCount)
+        for (let item of points) {
             let history = item;
             result.push(
                 <tr key={item.id}>
@@ -38,8 +37,26 @@ class ResultTable extends React.Component {
             )
         }
         return (
-            // <div className="container">
             <div>
+                <nav className="d-flex justify-content-center">
+                    <ul className="pagination">
+                        {
+                            pages.map((page) => (
+                                <li key={page} className={
+                                    page === this.state.currentpage ? "page-item active" : "page-item"
+                                }>
+                                    <button className="page-link"
+                                            onClick={() => {
+                                                this.setState({currentpage: page})
+                                                window.location.reload();
+                                            }}
+                                    >{page}</button>
+                                </li>
+                            ))
+                        }
+
+                    </ul>
+                </nav>
                 <table className="result-table">
                     <thead className="thead">
                     <tr>
@@ -55,22 +72,7 @@ class ResultTable extends React.Component {
                     <tbody>{result}</tbody>
                 </table>
                 <br/>
-                <nav className="d-flex justify-content-center">
-                    <ul className="pagination">
-                        {
-                            pages.map((page) => (
-                                <li key={page} className={
-                                    page === this.state.currentpage ? "page-item active" : "page-item"
-                                }>
-                                    <button className="page-link"
-                                       onClick={() => this.setState({currentpage: page})}
-                                    >{page}</button>
-                                </li>
-                            ))
-                        }
 
-                    </ul>
-                </nav>
             </div>
 
         )
@@ -78,9 +80,11 @@ class ResultTable extends React.Component {
 
     deleteButton = (item) => (<button className="r-button" onClick={event => {
         this.props.dispatch({type: "MAIN_DELETE_POINT", value: item})
+        window.location.reload();
     }}>Delete</button>);
 
 }
+
 
 function convertDate(date) {
     let newdate = new Date(date)
@@ -98,7 +102,9 @@ const mapStateToProps = function (store) {
         points: store.appState.points,
         currentPoint: store.mainState.currentPoint,
         x: store.mainState.xChange,
-        y: store.mainState.yChange
+        y: store.mainState.yChange,
+        totalPages: store.appState.totalPages,
+        currentPage: store.appState.currentPage
     }
 };
 

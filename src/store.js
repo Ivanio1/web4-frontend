@@ -6,7 +6,9 @@ const initialState = {
     appState: {
         user: window.localStorage.getItem("user"),
         points: [],
-        drawing: []
+        drawing: [],
+        totalPages:0,
+        currentPage:1
     },
     loginState: {
         login: "",
